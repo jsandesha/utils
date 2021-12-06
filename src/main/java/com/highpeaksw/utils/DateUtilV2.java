@@ -10,6 +10,16 @@ import com.highpeaksw.utils.exception.DataException;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * A utility class which manages the Date and Time operations using thread-safe, immutable java.time
+ * APIs
+ * 
+ * @see java.time
+ * 
+ * @author sandesha
+ * @author Merry
+ */
+
 @Slf4j
 public class DateUtilV2 {
 
@@ -39,6 +49,11 @@ public class DateUtilV2 {
             NullEmptyUtils.throwExceptionIfInputIsNull(shortZoneId, "Short zone ID is required");
             return (shortZoneId.equals("UTC") || shortZoneId.equals("GMT")) ? ZoneId.of("UTC")
                     : ZoneId.of(ZoneId.SHORT_IDS.get(shortZoneId));
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -136,6 +151,11 @@ public class DateUtilV2 {
             return localDateTime.atZone(getZoneIdFromShortZoneId(inputZoneShortId))
                     .withZoneSameInstant(getZoneIdFromShortZoneId(timeRequiredInZoneShortId)).toLocalDateTime();
         }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
+        }
         catch( Exception e )
         {
             log.error(GeneralConstants.ERROR, e);
@@ -165,9 +185,18 @@ public class DateUtilV2 {
     {
         try
         {
-            NullEmptyUtils.throwExceptionIfInputIsNull(localDateTime, START_DATE_TIME_NULL_ERROR);
-            NullEmptyUtils.throwExceptionIfInputIsNull(numberOfDays, "Number of days to be added is required");
+            NullEmptyUtils.throwExceptionIfInputIsNull(localDateTime, "Input date is missing");
+            if( numberOfDays < 1 )
+            {
+                throw new DataException(GeneralConstants.EXCEPTION,
+                        "Number of days must be more than 0 to get the future Date", HttpStatus.BAD_REQUEST);
+            }
             return localDateTime.plusDays(numberOfDays);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -199,8 +228,18 @@ public class DateUtilV2 {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDateTime, START_DATE_TIME_NULL_ERROR);
+            if( numberOfSeconds < 1 )
+            {
+                throw new DataException(GeneralConstants.EXCEPTION,
+                        "Number of seconds must be more than 0 to get the future Date", HttpStatus.BAD_REQUEST);
+            }
             NullEmptyUtils.throwExceptionIfInputIsNull(numberOfSeconds, "Seconds to be added is required");
             return localDateTime.plusSeconds(numberOfSeconds);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -227,8 +266,18 @@ public class DateUtilV2 {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDateTime, START_DATE_TIME_NULL_ERROR);
-            NullEmptyUtils.throwExceptionIfInputIsNull(numberOfDays, "Number of days to be subtracted is required");
+            if( numberOfDays < 1 )
+            {
+                throw new DataException(GeneralConstants.EXCEPTION,
+                        "Number of days must be more than 0 to get the past Date by that number",
+                        HttpStatus.BAD_REQUEST);
+            }
             return localDateTime.minusDays(numberOfDays);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -255,8 +304,18 @@ public class DateUtilV2 {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDateTime, START_DATE_TIME_NULL_ERROR);
-            NullEmptyUtils.throwExceptionIfInputIsNull(numberOfSeconds, "Seconds to be subtracted is required");
+            if( numberOfSeconds < 1 )
+            {
+                throw new DataException(GeneralConstants.EXCEPTION,
+                        "Number of seconds must be more than 0 to get the past Date by that number",
+                        HttpStatus.BAD_REQUEST);
+            }
             return localDateTime.minusSeconds(numberOfSeconds);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -283,8 +342,19 @@ public class DateUtilV2 {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDate, START_DATE_NULL_ERROR);
+            if( numberOfDays < 1 )
+            {
+                throw new DataException(GeneralConstants.EXCEPTION,
+                        "Number of days must be more than 0 to get the future Date by that number",
+                        HttpStatus.BAD_REQUEST);
+            }
             NullEmptyUtils.throwExceptionIfInputIsNull(numberOfDays, "Number of days to be added is required");
             return localDate.plusDays(numberOfDays);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -311,8 +381,18 @@ public class DateUtilV2 {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDate, START_DATE_NULL_ERROR);
-            NullEmptyUtils.throwExceptionIfInputIsNull(numberOfDays, "Number of days to be subtracted is required");
+            if( numberOfDays < 1 )
+            {
+                throw new DataException(GeneralConstants.EXCEPTION,
+                        "Number of days must be more than 0 to get the past Date by that number",
+                        HttpStatus.BAD_REQUEST);
+            }
             return localDate.minusDays(numberOfDays);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
@@ -342,6 +422,11 @@ public class DateUtilV2 {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDateTo, "End date is required");
             return Period.between(localDateFrom, localDateTo).getDays();
         }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
+        }
         catch( Exception e )
         {
             log.error(GeneralConstants.ERROR, e);
@@ -370,6 +455,11 @@ public class DateUtilV2 {
             return Period.between(getLocalDateFromHumanReadableStringDate(dateFrom),
                     getLocalDateFromHumanReadableStringDate(dateTo)).getDays();
         }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
+        }
         catch( Exception e )
         {
             log.error(GeneralConstants.ERROR, e);
@@ -393,6 +483,11 @@ public class DateUtilV2 {
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(inputDate, "Input string is required");
             return LocalDate.parse(inputDate, DateTimeFormatter.ofPattern(DD_MM_YYYY));
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
         }
         catch( Exception e )
         {
