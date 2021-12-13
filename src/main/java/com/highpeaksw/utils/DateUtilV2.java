@@ -1,5 +1,7 @@
 package com.highpeaksw.utils;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -413,14 +415,14 @@ public class DateUtilV2 {
      * @throws DataException
      *             If mandatory inputs are empty
      */
-    public static int getTheNumberOfDaysBetweenTwoLocalDates( LocalDate localDateFrom, LocalDate localDateTo )
+    public static long getTheNumberOfDaysBetweenTwoLocalDates( LocalDate localDateFrom, LocalDate localDateTo )
             throws DataException
     {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(localDateFrom, START_DATE_NULL_ERROR);
             NullEmptyUtils.throwExceptionIfInputIsNull(localDateTo, "End date is required");
-            return Period.between(localDateFrom, localDateTo).getDays();
+            return DAYS.between(localDateFrom, localDateTo);
         }
         catch( DataException e )
         {
@@ -446,14 +448,14 @@ public class DateUtilV2 {
      * @throws DataException
      *             If mandatory inputs are empty
      */
-    public static int getTheNumberOfDaysBetweenTwoStringDates( String dateFrom, String dateTo ) throws DataException
+    public static long getTheNumberOfDaysBetweenTwoStringDates( String dateFrom, String dateTo ) throws DataException
     {
         try
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(dateFrom, START_DATE_NULL_ERROR);
             NullEmptyUtils.throwExceptionIfInputIsNull(dateTo, "End date is required");
-            return Period.between(getLocalDateFromHumanReadableStringDate(dateFrom),
-                    getLocalDateFromHumanReadableStringDate(dateTo)).getDays();
+            return DAYS.between(getLocalDateFromHumanReadableStringDate(dateFrom),
+                    getLocalDateFromHumanReadableStringDate(dateTo));
         }
         catch( DataException e )
         {
