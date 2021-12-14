@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.http.HttpStatus;
 
 import com.highpeaksw.utils.constants.GeneralConstants;
+import com.highpeaksw.utils.enums.DateFormatPatternEnum;
 import com.highpeaksw.utils.exception.DataException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -485,6 +486,29 @@ public class DateUtilV2 {
         {
             NullEmptyUtils.throwExceptionIfInputIsNull(inputDate, "Input string is required");
             return LocalDate.parse(inputDate, DateTimeFormatter.ofPattern(DD_MM_YYYY));
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
+        }
+        catch( Exception e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw new DataException(GeneralConstants.EXCEPTION, "Error fetching date from a string",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public static String getHumanReadableStringDateFromLocalDate( LocalDate localDate,
+            DateFormatPatternEnum stringPattern ) throws DataException
+    {
+        try
+        {
+            NullEmptyUtils.throwExceptionIfInputIsNull(localDate, "Input date is missing");
+            stringPattern = NullEmptyUtils.isNull(stringPattern) ? DateFormatPatternEnum.DD_MMM_YYYY : stringPattern;
+
+            return localDate.format(DateTimeFormatter.ofPattern(stringPattern.getPattern()));
         }
         catch( DataException e )
         {
