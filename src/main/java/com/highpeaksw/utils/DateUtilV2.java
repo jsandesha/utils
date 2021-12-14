@@ -500,6 +500,19 @@ public class DateUtilV2 {
         }
     }
 
+    /**
+     * This method takes the {@link LocalDate} and {@link DateFormatPatternEnum} as inputs and returns
+     * the corresponding string date. If no pattern is passed as input the method uses
+     * {@link DateFormatPatternEnum#DD_MMM_YYYY} as the default one
+     * 
+     * @param localDate
+     *            Date to be converted
+     * @param stringPattern
+     *            Pattern in which the string date is needed
+     * @return String date
+     * @throws DataException
+     *             If input is null
+     */
     public static String getHumanReadableStringDateFromLocalDate( LocalDate localDate,
             DateFormatPatternEnum stringPattern ) throws DataException
     {

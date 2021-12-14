@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.junit.Test;
 
+import com.highpeaksw.utils.enums.DateFormatPatternEnum;
 import com.highpeaksw.utils.exception.DataException;
 
 /**
@@ -343,5 +344,39 @@ public class DateUtilV2Test {
         LocalDate expectedOutput = LocalDate.parse("12-02-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
         assertEquals(expectedOutput, DateUtilV2.getLocalDateFromHumanReadableStringDate("12-02-2020"));
+    }
+
+    @Test
+    public void testGetHumanReadableStringDateFromLocalDateNullDateAsInput()
+    {
+        DataException dataException = assertThrows(DataException.class,
+                () -> DateUtilV2.getHumanReadableStringDateFromLocalDate(null, DateFormatPatternEnum.DD_MMM_YYYY));
+        assertEquals("Input date is missing", dataException.getErrorMessage());
+    }
+
+    @Test
+    public void testGetHumanReadableStringDateFromLocalDateNullFormatterAsInput() throws DataException
+    {
+        LocalDate localDate = LocalDate.of(2021, 3, 21);
+        String dateExpected = "21-Mar-2021";
+        assertEquals(dateExpected, DateUtilV2.getHumanReadableStringDateFromLocalDate(localDate, null));
+    }
+
+    @Test
+    public void testGetHumanReadableStringDateFromLocalDateDDMMYYYYFormat() throws DataException
+    {
+        LocalDate localDate = LocalDate.of(2021, 3, 21);
+        String dateExpected = "21-Mar-2021";
+        assertEquals(dateExpected,
+                DateUtilV2.getHumanReadableStringDateFromLocalDate(localDate, DateFormatPatternEnum.DD_MMM_YYYY));
+    }
+
+    @Test
+    public void testGetHumanReadableStringDateFromLocalDateDDMMYYFormat() throws DataException
+    {
+        LocalDate localDate = LocalDate.of(2021, 3, 21);
+        String dateExpected = "21-Mar-21";
+        assertEquals(dateExpected,
+                DateUtilV2.getHumanReadableStringDateFromLocalDate(localDate, DateFormatPatternEnum.DD_MMM_YY));
     }
 }
