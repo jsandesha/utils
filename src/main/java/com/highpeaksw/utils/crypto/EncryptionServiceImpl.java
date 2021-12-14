@@ -63,7 +63,7 @@ public class EncryptionServiceImpl implements EncryptionService {
         }
         catch( Exception e )
         {
-            log.error("Error {0}", e);
+            log.error(GeneralConstants.ERROR, e);
             throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.SOMETHING_WENT_WRONG,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -99,7 +99,7 @@ public class EncryptionServiceImpl implements EncryptionService {
         }
         catch( Exception e )
         {
-            log.error("Error {0}", e);
+            log.error(GeneralConstants.ERROR, e);
             throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.SOMETHING_WENT_WRONG,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -141,7 +141,7 @@ public class EncryptionServiceImpl implements EncryptionService {
         }
         catch( Exception e )
         {
-            log.error("Error {0}", e);
+            log.error(GeneralConstants.ERROR, e);
             throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.SOMETHING_WENT_WRONG,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -169,7 +169,7 @@ public class EncryptionServiceImpl implements EncryptionService {
         }
         catch( Exception e )
         {
-            log.error("Error {0}", e);
+            log.error(GeneralConstants.ERROR, e);
             throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.SOMETHING_WENT_WRONG,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
