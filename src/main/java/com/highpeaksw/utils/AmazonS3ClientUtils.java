@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.AmazonS3;
-
 import java.net.URL;
 
 import org.springframework.mock.web.MockMultipartFile;
@@ -64,9 +63,9 @@ public class AmazonS3ClientUtils {
             ObjectMetadata data = new ObjectMetadata();
             data.setContentType(file.getContentType());
             data.setContentLength(file.getSize());
-
+            log.info("uploading file to s3");
             amazonS3.putObject(bucketName, filePath, file.getInputStream(), data);
-
+            log.info("file uploaded");
             return filePath;
 
         }
@@ -102,8 +101,9 @@ public class AmazonS3ClientUtils {
             NullEmptyUtils.throwExceptionIfInputIsNull(amazonS3, AMAZON_S3_BEAN_NULL_ERROR);
             NullEmptyUtils.throwExceptionIfInputIsNullOrEmpty(bucketName, S3_BUCKET_NAME_NULL_ERROR);
             NullEmptyUtils.throwExceptionIfInputIsNullOrEmpty(filePath, FILE_PATH_NULL_ERROR);
-
+            log.info("deleting file from S3");
             amazonS3.deleteObject(bucketName, filePath);
+            log.info("file deleted");
         }
         catch( DataException e )
         {
