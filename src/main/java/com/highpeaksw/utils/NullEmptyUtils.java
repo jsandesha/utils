@@ -3,6 +3,8 @@ package com.highpeaksw.utils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.http.HttpStatus;
 
@@ -11,8 +13,15 @@ import com.highpeaksw.utils.exception.DataException;
 
 public class NullEmptyUtils {
 
-    private NullEmptyUtils()
+    private NullEmptyUtils() throws DataException
     {
+        throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.CONSTRUCTOR_CREATION_ERROR,
+                HttpStatus.BAD_REQUEST);
+    }
+
+    public static boolean isNull( Object val )
+    {
+        return val == null;
     }
 
     public static boolean isNullOrEmpty( String val )
@@ -50,11 +59,6 @@ public class NullEmptyUtils {
         return isNull(val) || val.isEmpty();
     }
 
-    public static boolean isNull( Object val )
-    {
-        return val == null;
-    }
-
     public static void throwExceptionIfInputIsNull( Object object ) throws DataException
     {
         if( isNull(object) )
@@ -74,27 +78,18 @@ public class NullEmptyUtils {
 
     public static void throwExceptionIfInputIsNullOrEmpty( Object object ) throws DataException
     {
-        if( isNull(object) )
+        if( isNull(object) || (object instanceof String s && isNullOrEmpty(s))
+                || (object instanceof Collection<?> c && c.isEmpty()) )
         {
             throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.NULL_INPUT_ERROR,
                     HttpStatus.BAD_REQUEST);
-        }
-        if( object instanceof String s && isNullOrEmpty(s) )
-        {
-            throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.NULL_INPUT_ERROR,
-                    HttpStatus.BAD_REQUEST);
-        }
-        if( object instanceof Collection c && c.isEmpty() )
-        {
-            throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.NULL_INPUT_ERROR,
-                    HttpStatus.BAD_REQUEST);
-
         }
     }
 
     public static void throwExceptionIfInputIsNullOrEmpty( Object object, String message ) throws DataException
     {
-        if( isNull(object) )
+        if( isNull(object) || (object instanceof String s && isNullOrEmpty(s))
+                || (object instanceof Collection<?> c && c.isEmpty()) )
         {
             throw new DataException(GeneralConstants.EXCEPTION, message, HttpStatus.BAD_REQUEST);
         }
