@@ -11,8 +11,10 @@ import com.highpeaksw.utils.exception.DataException;
 
 public class NullEmptyUtils {
 
-    private NullEmptyUtils()
+    private NullEmptyUtils() throws DataException
     {
+        throw new DataException(GeneralConstants.EXCEPTION, GeneralConstants.CONSTRUCTOR_CREATION_ERROR,
+                HttpStatus.BAD_REQUEST);
     }
 
     public static boolean isNullOrEmpty( String val )
