@@ -1,6 +1,7 @@
 package com.highpeaksw.utils;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -437,6 +438,29 @@ public class DateUtilV2 {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public static long getTheNumberOfSecondsBetweenTwoLocalDateTimes( LocalDateTime localDateFrom, LocalDateTime localDateTo )
+            throws DataException
+    {
+        try
+        {
+            NullEmptyUtils.throwExceptionIfInputIsNull(localDateFrom, START_DATE_NULL_ERROR);
+            NullEmptyUtils.throwExceptionIfInputIsNull(localDateTo, "End date is required");
+            return SECONDS.between(localDateFrom, localDateTo);
+        }
+        catch( DataException e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw e;
+        }
+        catch( Exception e )
+        {
+            log.error(GeneralConstants.ERROR, e);
+            throw new DataException(GeneralConstants.EXCEPTION, "Error while fetching number of days between two dates",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     /**
      * method to get the number of days in between two string dates.
